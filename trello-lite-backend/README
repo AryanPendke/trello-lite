@@ -1,0 +1,4 @@
+npm i
+cp .env.example .env
+# edit .env if needed
+npm run dev
