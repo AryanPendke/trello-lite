@@ -4,6 +4,10 @@ const db = {
     tasks: [],
 };
 module.exports = {
-    getDB: () => {db},
-    resetDB: () => {db.users.length = 0; db.boards.length = 0; db.tasks.length = 0;}
+    getDB: () => db,  // <-- FIXED (no curly braces)
+    resetDB: () => {
+        db.users.length = 0;
+        db.boards.length = 0;
+        db.tasks.length = 0;
+    }
 };

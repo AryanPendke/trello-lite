@@ -13,7 +13,7 @@ exports.getBoardById = async(id) => {
 exports.updateBoard = async(id,data) =>{
 
 }
-exports.deleteBoard = async(id) => {
+exports.deleteBoardById = async(id) => {
 
 }
 
@@ -23,3 +23,4 @@ exports.exportBoard = async(id,res) => {
 exports.importBoard = async(req)=>{
 
 }
+ 
