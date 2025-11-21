@@ -11,7 +11,7 @@ exports.getAllUsers = asyncHandler(async(req,res)=>{
     res.status(201).json({success: true, message: 'fetched all users successfully', data: result});
 })
 
-exports.getUserbyId = asyncHandler(async(req,res)=>{
+exports.getUserById = asyncHandler(async(req,res)=>{
     const result = await userServices.getUserById(req.params.id);
     res.status(201).json({success: true, message: `user Fetched successfully`, data: result});
 });
@@ -19,4 +19,4 @@ exports.getUserbyId = asyncHandler(async(req,res)=>{
 exports.deleteUser = asyncHandler(async(req,res)=>{
     await userServices.deleteUser(req.params.id);
     res.status(201).json({success: true, message:  `user deleted successfully`});
-}); 
+});   

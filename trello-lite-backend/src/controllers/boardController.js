@@ -19,10 +19,10 @@ exports.getBoardById = asyncHandler(async(req,res)=>{
 exports.updateBoard = asyncHandler(async(req,res) => {
     const result = await boardServices.updateBoard(req.params.id, req.body);
     res.status(201).json({success: true, message: `Board updated successfully`, data: result});
-});
+}); 
 
-exports.deleteBoard = asyncHandler(async(req,res) => {
-    await boardServices.deleteBoard(req.params.id);
+exports.deleteBoardById = asyncHandler(async(req,res) => {
+    await boardServices.deleteBoardById(req.params.id);
     res.status(201).json({success: true, message: `Board deleted successfully`});
 });
 
