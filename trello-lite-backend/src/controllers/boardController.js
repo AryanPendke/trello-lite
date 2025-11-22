@@ -27,12 +27,12 @@ exports.deleteBoardById = asyncHandler(async(req,res) => {
 });
 
 exports.exportBoard = asyncHandler(async(req,res) => {
-    const result = await boardServices.exportBoard(req.params.id,res);
-    res.status(201).json({success: true, message: `board Exported successfully`});
+    const result = await boardServices.exportBoard(req.params.id);
+    res.status(201).json({success: true, message: `board Exported successfully`,data: result});
 });
 
 exports.importBoard = asyncHandler(async(req,res) => {
-    const result = await boardServices.importBoard(req);
+    const result = await boardServices.importBoard(req.file.path);
     res.status(201).json({success: true, message: `board imported successfully`, data: result});
 });
 

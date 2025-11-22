@@ -1,0 +1,18 @@
+`{
+  "board": {
+    "id": "b706c54b-326f-4f65-b777-ffe5c7a64cb7",
+    "name": "Project Alpha",
+    "ownerId": "967017f1-b5f0-48f2-8536-a0e04f2dc6dd",
+    "createdAt": 1763818608813
+  },
+  "tasks": [
+    {
+      "id": "7c2a591d-84e4-4361-80cc-df5d546e83d2",
+      "boardId": "b706c54b-326f-4f65-b777-ffe5c7a64cb7",
+      "title": "Setup backend",
+      "description": "Initialize Node project",
+      "status": "todo",
+      "createdAt": 1763818631758
+    }
+  ]
+}
