@@ -1,4 +1,6 @@
+const path = require('path');
 const {getDB} = require('./db');
+const fs = require('fs');
 const {randomUUID} = require('crypto');
 
 exports.createBoard = async(data) => {
@@ -63,8 +65,8 @@ exports.updateBoard = async(id,data) =>{
 }
 exports.deleteBoardById = async(id) => {
     const db = getDB();
-    const boardIndex = db.boards.findIndex((u)=>db.id === id);
-    if(!boardIndex){
+    const boardIndex = db.boards.findIndex((u)=>u.id === id);
+    if(boardIndex === -1){
         const err = new Error('board not found');
         err.statusCode = 404;
         throw err;
@@ -72,10 +74,61 @@ exports.deleteBoardById = async(id) => {
     db.boards.splice(boardIndex,1);
     db.tasks = db.tasks.filter((t)=>t.boardId !== id);
 }
-exports.exportBoard = async(id,res) => {
-    
-}
-exports.importBoard = async(req)=>{
+exports.exportBoard = async(id) => {
+    const db = getDB();
+    const board = db.boards.find((b)=> b.id === id);
+    if(!board){
+        const err = new Error('board not found');
+        err.statusCode = 404;
+        throw err;
+    }
+    const tasks = db.tasks.filter((t)=>t.boardId === id);
+    const exportData = {board,tasks};
+    const filePath = path.join(__dirname,`../../exports/${id}.json`);
+    const writeStream = fs.createWriteStream(filePath);
 
+    writeStream.write(JSON.stringify(exportData,null,2));
+    writeStream.end();
+
+    return {filePath};
+}
+exports.importBoard = async(filePath)=>{
+    const db = getDB();
+
+    return new Promise((resolve,reject) => {
+        const readStream = fs.createReadStream(filePath,{encoding:"utf8"});
+        let raw = "";
+        readStream.on("data",(chunk) => {
+            raw += chunk;
+        });
+        readStream.on("end",()=>{
+            try{
+                const data = JSON.parse(raw);
+                const {board,tasks} = data;
+                const newBoardId = randomUUID();
+                const newBoard = {
+                    ...board,
+                    id: newBoardId,
+                    createdAt: Date.now()
+                }
+                db.boards.push(newBoard);
+
+                tasks.forEach((t)=>{
+                    db.tasks.push({
+                        ...t,
+                        id:randomUUID(),
+                        boardId: newBoardId,
+                        createdAt: Date.now(),
+                    })
+                })
+
+                resolve({boardId: newBoardId});
+            }
+            catch(err){
+                reject(err);
+            }
+        })
+        readStream.on("error",(err) => reject(err));
+    })
 }
  

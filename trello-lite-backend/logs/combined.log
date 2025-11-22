@@ -1023,3 +1023,30 @@
 {"level":"info","message":"::1 - - [22/Nov/2025:11:34:43 +0000] \"GET /api/tasks/db798408-c13b-4757-b7d5-388baf62211b HTTP/1.1\" 404 45 \"-\" \"PostmanRuntime/7.39.1\"","timestamp":"2025-11-22T11:34:43.024Z"}
 {"level":"info","message":"::1 - - [22/Nov/2025:11:34:49 +0000] \"GET /api/tasks/ HTTP/1.1\" 404 39 \"-\" \"PostmanRuntime/7.39.1\"","timestamp":"2025-11-22T11:34:49.774Z"}
 {"level":"info","message":"::1 - - [22/Nov/2025:11:34:53 +0000] \"GET /api/tasks HTTP/1.1\" 404 39 \"-\" \"PostmanRuntime/7.39.1\"","timestamp":"2025-11-22T11:34:53.633Z"}
+{"level":"info","message":"Server listening at port 5000 in development mode","timestamp":"2025-11-22T13:31:40.357Z"}
+{"level":"info","message":"::1 - - [22/Nov/2025:13:32:55 +0000] \"POST /api/users HTTP/1.1\" 201 176 \"-\" \"PostmanRuntime/7.39.1\"","timestamp":"2025-11-22T13:32:55.306Z"}
+{"level":"info","message":"::1 - - [22/Nov/2025:13:33:49 +0000] \"POST /api/boards HTTP/1.1\" 201 206 \"-\" \"PostmanRuntime/7.39.1\"","timestamp":"2025-11-22T13:33:49.342Z"}
+{"level":"info","message":"::1 - - [22/Nov/2025:13:34:25 +0000] \"POST /tasks/d74346e5-d82b-40bc-a189-313444c2154c HTTP/1.1\" 404 39 \"-\" \"PostmanRuntime/7.39.1\"","timestamp":"2025-11-22T13:34:25.542Z"}
+{"level":"info","message":"::1 - - [22/Nov/2025:13:34:58 +0000] \"POST /boards/ HTTP/1.1\" 404 39 \"-\" \"PostmanRuntime/7.39.1\"","timestamp":"2025-11-22T13:34:58.801Z"}
+{"level":"info","message":"::1 - - [22/Nov/2025:13:35:02 +0000] \"GET /boards/ HTTP/1.1\" 404 39 \"-\" \"PostmanRuntime/7.39.1\"","timestamp":"2025-11-22T13:35:02.232Z"}
+{"level":"info","message":"::1 - - [22/Nov/2025:13:35:06 +0000] \"GET /boards/ HTTP/1.1\" 404 39 \"-\" \"PostmanRuntime/7.39.1\"","timestamp":"2025-11-22T13:35:06.630Z"}
+{"level":"info","message":"::1 - - [22/Nov/2025:13:35:21 +0000] \"GET /users/ HTTP/1.1\" 404 39 \"-\" \"PostmanRuntime/7.39.1\"","timestamp":"2025-11-22T13:35:21.505Z"}
+{"level":"info","message":"::1 - - [22/Nov/2025:13:35:30 +0000] \"GET /users/ HTTP/1.1\" 404 39 \"-\" \"PostmanRuntime/7.39.1\"","timestamp":"2025-11-22T13:35:30.613Z"}
+{"level":"info","message":"Server listening at port 5000 in development mode","timestamp":"2025-11-22T13:35:51.589Z"}
+{"level":"info","message":"::1 - - [22/Nov/2025:13:35:54 +0000] \"GET /users/ HTTP/1.1\" 404 39 \"-\" \"PostmanRuntime/7.39.1\"","timestamp":"2025-11-22T13:35:54.635Z"}
+{"level":"info","message":"::1 - - [22/Nov/2025:13:35:55 +0000] \"GET /users/ HTTP/1.1\" 404 39 \"-\" \"PostmanRuntime/7.39.1\"","timestamp":"2025-11-22T13:35:55.529Z"}
+{"level":"info","message":"::1 - - [22/Nov/2025:13:35:55 +0000] \"GET /users/ HTTP/1.1\" 404 39 \"-\" \"PostmanRuntime/7.39.1\"","timestamp":"2025-11-22T13:35:55.948Z"}
+{"level":"info","message":"::1 - - [22/Nov/2025:13:35:56 +0000] \"GET /users/ HTTP/1.1\" 404 39 \"-\" \"PostmanRuntime/7.39.1\"","timestamp":"2025-11-22T13:35:56.117Z"}
+{"level":"info","message":"::1 - - [22/Nov/2025:13:35:56 +0000] \"GET /users/ HTTP/1.1\" 404 39 \"-\" \"PostmanRuntime/7.39.1\"","timestamp":"2025-11-22T13:35:56.260Z"}
+{"level":"info","message":"::1 - - [22/Nov/2025:13:35:56 +0000] \"GET /users/ HTTP/1.1\" 404 39 \"-\" \"PostmanRuntime/7.39.1\"","timestamp":"2025-11-22T13:35:56.412Z"}
+{"level":"info","message":"::1 - - [22/Nov/2025:13:35:56 +0000] \"GET /users/ HTTP/1.1\" 404 39 \"-\" \"PostmanRuntime/7.39.1\"","timestamp":"2025-11-22T13:35:56.553Z"}
+{"level":"info","message":"::1 - - [22/Nov/2025:13:35:56 +0000] \"GET /users/ HTTP/1.1\" 404 39 \"-\" \"PostmanRuntime/7.39.1\"","timestamp":"2025-11-22T13:35:56.692Z"}
+{"level":"info","message":"::1 - - [22/Nov/2025:13:35:56 +0000] \"GET /users/ HTTP/1.1\" 404 39 \"-\" \"PostmanRuntime/7.39.1\"","timestamp":"2025-11-22T13:35:56.847Z"}
+{"level":"info","message":"::1 - - [22/Nov/2025:13:35:56 +0000] \"GET /users/ HTTP/1.1\" 404 39 \"-\" \"PostmanRuntime/7.39.1\"","timestamp":"2025-11-22T13:35:56.987Z"}
+{"level":"info","message":"::1 - - [22/Nov/2025:13:35:57 +0000] \"GET /users/ HTTP/1.1\" 404 39 \"-\" \"PostmanRuntime/7.39.1\"","timestamp":"2025-11-22T13:35:57.186Z"}
+{"level":"info","message":"::1 - - [22/Nov/2025:13:36:05 +0000] \"GET /api/users/ HTTP/1.1\" 201 69 \"-\" \"PostmanRuntime/7.39.1\"","timestamp":"2025-11-22T13:36:05.753Z"}
+{"level":"error","message":"SyntaxError: Expected ',' or '}' after property value in JSON at position 55\n    at JSON.parse (<anonymous>)\n    at parse (D:\\Project_GITHUB\\trello-lite\\trello-lite\\trello-lite-backend\\node_modules\\body-parser\\lib\\types\\json.js:77:19)\n    at D:\\Project_GITHUB\\trello-lite\\trello-lite\\trello-lite-backend\\node_modules\\body-parser\\lib\\read.js:123:18\n    at AsyncResource.runInAsyncScope (node:async_hooks:206:9)\n    at invokeCallback (D:\\Project_GITHUB\\trello-lite\\trello-lite\\trello-lite-backend\\node_modules\\raw-body\\index.js:238:16)\n    at done (D:\\Project_GITHUB\\trello-lite\\trello-lite\\trello-lite-backend\\node_modules\\raw-body\\index.js:227:7)\n    at IncomingMessage.onEnd (D:\\Project_GITHUB\\trello-lite\\trello-lite\\trello-lite-backend\\node_modules\\raw-body\\index.js:287:7)\n    at IncomingMessage.emit (node:events:519:28)\n    at endReadableNT (node:internal/streams/readable:1696:12)\n    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)","timestamp":"2025-11-22T13:36:17.826Z"}
+{"level":"info","message":"::1 - - [22/Nov/2025:13:36:22 +0000] \"POST /api/users/ HTTP/1.1\" 201 176 \"-\" \"PostmanRuntime/7.39.1\"","timestamp":"2025-11-22T13:36:22.854Z"}
+{"level":"info","message":"::1 - - [22/Nov/2025:13:36:48 +0000] \"POST /api/boards/ HTTP/1.1\" 201 206 \"-\" \"PostmanRuntime/7.39.1\"","timestamp":"2025-11-22T13:36:48.814Z"}
+{"level":"info","message":"::1 - - [22/Nov/2025:13:37:11 +0000] \"POST /api/tasks/b706c54b-326f-4f65-b777-ffe5c7a64cb7 HTTP/1.1\" 201 262 \"-\" \"PostmanRuntime/7.39.1\"","timestamp":"2025-11-22T13:37:11.759Z"}
+{"level":"info","message":"::1 - - [22/Nov/2025:13:37:59 +0000] \"GET /api/boards/b706c54b-326f-4f65-b777-ffe5c7a64cb7/export HTTP/1.1\" 201 196 \"-\" \"PostmanRuntime/7.39.1\"","timestamp":"2025-11-22T13:37:59.757Z"}
