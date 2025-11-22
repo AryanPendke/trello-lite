@@ -14,7 +14,7 @@ exports.getAllBoards = asyncHandler(async(req,res) => {
 exports.getBoardById = asyncHandler(async(req,res)=>{
     const result = await boardServices.getBoardById(req.params.id);
     res.status(201).json({success: true, message: `Board fetched successfully`, data: result});
-});
+}); 
 
 exports.updateBoard = asyncHandler(async(req,res) => {
     const result = await boardServices.updateBoard(req.params.id, req.body);
