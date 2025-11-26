@@ -2,6 +2,9 @@ const http = require('http');
 const app = require('./app');
 const config = require('./config');
 const {logger} = require('./middlewares/logger');
+const {connectDB} = require('./config/db');
+
+connectDB();
 
 const port = config.port;
 

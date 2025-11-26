@@ -1,102 +1,138 @@
-const {getDB} = require('./db');
-const {randomUUID} = require('crypto');
+const Task = require("../models/Task");
+const Board = require("../models/Board");
 
-const validStates = ["todo","in-progress","done"];
+/**
+ * VALID STATUSES
+ */
+const VALID_STATUSES = ["todo", "in-progress", "done"];
 
-exports.createTask = async(boardId,data) => {
-    const db = getDB();
-    const {title, description="",status="todo"} = data;
+/**
+ * Create Task under a board
+ * - validates board exists
+ * - validates title & status
+ */
+exports.createTask = async (boardId, data) => {
+  const { title, description = "", status = "todo" } = data;
 
-    const board = db.boards.find((b)=>b.id === boardId);
-    if(!board){
-        const err = new Error('board not found');
-        err.statusCode = 404;
-        throw err;
-    }
-    if(!title){
-        const err = new Error('title is required');
-        err.statusCode = 400;
-        throw err;
-    }
-    if(!validStates.includes(status)){
-        const err = new Error('invalid task status');
-        err.statusCode = 400;
-        throw err;
-    }
-    const task = {
-        id: randomUUID(),
-        boardId,
-        title, 
-        description,
-        status,
-        createdAt: Date.now(),
-    };
+  // board existence
+  const board = await Board.findById(boardId);
+  if (!board) {
+    const err = new Error("Board not found");
+    err.statusCode = 404;
+    throw err;
+  }
 
-    db.tasks.push(task);
-    return task;
+  // title validation
+  if (!title || title.toString().trim() === "") {
+    const err = new Error("Task title is required");
+    err.statusCode = 400;
+    throw err;
+  }
+
+  // status validation
+  if (!VALID_STATUSES.includes(status)) {
+    const err = new Error("Invalid task status");
+    err.statusCode = 400;
+    throw err;
+  }
+
+  const task = await Task.create({
+    title,
+    description,
+    status,
+    boardId: board._id.toString()
+  });
+
+  return task;
 };
-exports.deleteTask = async(taskId) => {
-    const db = getDB();
-    const index = db.tasks.findIndex((t)=>t.id === taskId);
-    if(index===-1){
-        const err = new Error('task not found');
-        err.statusCode = 404;
-        throw err;
-    }
-    db.tasks.splice(index,1);
+
+/**
+ * Get tasks for a board
+ * - validates board exists
+ */
+exports.getTasksByBoard = async (boardId) => {
+  const board = await Board.findById(boardId);
+  if (!board) {
+    const err = new Error("Board not found");
+    err.statusCode = 404;
+    throw err;
+  }
+
+  const tasks = await Task.find({ boardId }).sort({ createdAt: -1 });
+  return tasks;
 };
-exports.updateTask = async(taskId,data) => {
-    const db = getDB();
-    const {title, description, status} = data;
-    const task = db.tasks.find((t)=>t.id === taskId);
-    if(!task){
-        const err = new Error('task not found');
-        err.statusCode = 404;
-        throw err;
-    }
-    if (title !== undefined && title.trim() === "") {
-        const err = new Error("Task title cannot be empty");
-        err.statusCode = 400;
-        throw err;
-    }
-    if (status && !validStates.includes(status)) {
-        const err = new Error("Invalid task status");
-        err.statusCode = 400;
-        throw err;
-    }
-    if (title !== undefined) task.title = title;
-    if (description !== undefined) task.description = description;
-    if (status !== undefined) task.status = status;
-    return task;
+
+/**
+ * Update task (title, description, status)
+ */
+exports.updateTask = async (taskId, data) => {
+  const { title, description, status } = data;
+
+  const task = await Task.findById(taskId);
+  if (!task) {
+    const err = new Error("Task not found");
+    err.statusCode = 404;
+    throw err;
+  }
+
+  // title validation (if provided)
+  if (title !== undefined && title.toString().trim() === "") {
+    const err = new Error("Task title cannot be empty");
+    err.statusCode = 400;
+    throw err;
+  }
+
+  // status validation (if provided)
+  if (status !== undefined && !VALID_STATUSES.includes(status)) {
+    const err = new Error("Invalid task status");
+    err.statusCode = 400;
+    throw err;
+  }
+
+  if (title !== undefined) task.title = title;
+  if (description !== undefined) task.description = description;
+  if (status !== undefined) task.status = status;
+
+  await task.save();
+  return task;
 };
-exports.getTasksByBoard = async(boardId) => {
-    const db = getDB(); 
-    const board = db.boards.find((b)=>b.id === boardId);
-    if(!board){
-        const err = new Error('board not found');
-        err.statusCode = 404;
-        throw err;
-    }
-    const boardTasks = db.tasks.filter((t)=>t.boardId === boardId);
-    return boardTasks;
+
+/**
+ * Delete task
+ */
+exports.deleteTask = async (taskId) => {
+  const task = await Task.findById(taskId);
+  if (!task) {
+    const err = new Error("Task not found");
+    err.statusCode = 404;
+    throw err;
+  }
+
+  await Task.findByIdAndDelete(taskId);
 };
+
+/**
+ * Move task to another board
+ * - validates task exists
+ * - validates target board exists
+ * - updates task.boardId
+ */
 exports.moveTask = async (taskId, targetBoardId) => {
-    const db = getDB();
+  const task = await Task.findById(taskId);
+  if (!task) {
+    const err = new Error("Task not found");
+    err.statusCode = 404;
+    throw err;
+  }
 
-    const task = db.tasks.find((t) => t.id === taskId);
-    if (!task) {
-        const err = new Error("Task not found");
-        err.statusCode = 404;
-        throw err;
-    }
+  const targetBoard = await Board.findById(targetBoardId);
+  if (!targetBoard) {
+    const err = new Error("Target board not found");
+    err.statusCode = 404;
+    throw err;
+  }
 
-    const targetBoard = db.boards.find((b) => b.id === targetBoardId);
-    if (!targetBoard) {
-        const err = new Error("Target board not found");
-        err.statusCode = 404;
-        throw err;
-    }
-
-    task.boardId = targetBoardId;
-    return task;
+  task.boardId = targetBoard._id.toString();
+  await task.save();
+  return task;
 };

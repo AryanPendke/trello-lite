@@ -1,57 +1,86 @@
-const {getDB} = require('./db');
-const {randomUUID} = require('crypto');
+const User = require("../models/User");
 
 exports.createUser = async (data) => {
-    const db = getDB();
-    const {name,email} = data;
-    if(!name){
-        const err = new Error('name is required');
-        err.statusCode = 400;
-        throw err;
-    }
-    if(!email){
-        const err = new Error('email is required');
-        err.statusCode = 400;
-        throw err;
-    }
-    const existing = db.users.find((u)=>u.email === email);
-    if(existing){
-        const err = new Error('email already exists');
-        err.statusCode = 400;
-        throw err;
-    }
-    const newUser = {
-        id: randomUUID(),
-        name, 
-        email,
-        createdAt: Date.now()
-    };
-    db.users.push(newUser);
-    return newUser;
-};
-exports.deleteUser = async (id) => {
-    const db = getDB();
-    const index = db.users.findIndex((u)=>u.id === id);
-    if(index!=-1){
-        const err = new Error('user not found');
-        err.statusCode = 404;
-        throw err;
-    }
-    db.users.splice(index,1);
-};
-exports.getAllUsers = async () => {
-    const db = getDB();
-    return db.users;
-};
-exports.getUserById = async(id) => {
-    const db = getDB();
-    const user = db.users.find((u)=> u.id === id);
-    if(!user){
-        const err = new Error('user not found');
-        err.statusCode = 404;
-        throw err;
-    }
-    return user;
+  const { name, email } = data;
+
+  if (!name) {
+    const err = new Error("Name is required");
+    err.statusCode = 400;
+    throw err;
+  }
+
+  if (!email) {
+    const err = new Error("Email is required");
+    err.statusCode = 400;
+    throw err;
+  }
+
+  // check if email already exists
+  const exists = await User.findOne({ email });
+  if (exists) {
+    const err = new Error("Email already exists");
+    err.statusCode = 409; // conflict
+    throw err;
+  }
+
+  const user = await User.create({ name, email });
+  return user;
 };
 
-   
+exports.getAllUsers = async () => {
+  return await User.find().sort({ createdAt: -1 });
+};
+
+exports.getUserById = async (id) => {
+  const user = await User.findById(id);
+
+  if (!user) {
+    const err = new Error("User not found");
+    err.statusCode = 404;
+    throw err;
+  }
+  return user;
+};
+
+exports.updateUser = async (id, data) => {
+  const { name, email } = data;
+
+  if (!name && !email) {
+    const err = new Error("Nothing to update");
+    err.statusCode = 400;
+    throw err;
+  }
+
+  const user = await User.findById(id);
+  if (!user) {
+    const err = new Error("User not found");
+    err.statusCode = 404;
+    throw err;
+  }
+
+  if (email) {
+    const exists = await User.findOne({ email });
+    if (exists && exists._id.toString() !== id) {
+      const err = new Error("Email already in use by another account");
+      err.statusCode = 409;
+      throw err;
+    }
+    user.email = email;
+  }
+
+  if (name) user.name = name;
+
+  await user.save();
+  return user;
+};
+
+exports.deleteUser = async (id) => {
+  const user = await User.findById(id);
+  if (!user) {
+    const err = new Error("User not found");
+    err.statusCode = 404;
+    throw err;
+  }
+
+  await User.findByIdAndDelete(id);
+};
