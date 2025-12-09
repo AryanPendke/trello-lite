@@ -131,6 +131,28 @@ exports.importBoard = async (filePath) => {
         const data = JSON.parse(raw);
         const { board, tasks } = data;
 
+        // Validate file structure
+        if (!board || !board.name || !board.ownerId) {
+          const err = new Error("Invalid file format: board data is missing or incomplete");
+          err.statusCode = 400;
+          return reject(err);
+        }
+
+        // Validate owner exists
+        const owner = await User.findById(board.ownerId);
+        if (!owner) {
+          const err = new Error("Owner not found");
+          err.statusCode = 404;
+          return reject(err);
+        }
+
+        // Validate tasks array if present
+        if (tasks !== undefined && !Array.isArray(tasks)) {
+          const err = new Error("Invalid file format: tasks must be an array");
+          err.statusCode = 400;
+          return reject(err);
+        }
+
         // Create new board (ignore old _id)
         const newBoard = await Board.create({
           name: board.name,
@@ -141,12 +163,22 @@ exports.importBoard = async (filePath) => {
 
         // Insert cloned tasks
         if (Array.isArray(tasks) && tasks.length > 0) {
-          const newTasks = tasks.map((t) => ({
-            title: t.title,
-            description: t.description || "",
-            status: t.status || "todo",
-            boardId: newBoardId
-          }));
+          const VALID_STATUSES = ["todo", "in-progress", "done"];
+          const newTasks = tasks.map((t) => {
+            if (!t.title || t.title.toString().trim() === "") {
+              throw new Error("Task title is required");
+            }
+            const status = t.status || "todo";
+            if (!VALID_STATUSES.includes(status)) {
+              throw new Error(`Invalid task status: ${status}`);
+            }
+            return {
+              title: t.title,
+              description: t.description || "",
+              status: status,
+              boardId: newBoardId
+            };
+          });
 
           await Task.insertMany(newTasks);
         }

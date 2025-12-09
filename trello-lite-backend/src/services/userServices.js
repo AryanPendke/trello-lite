@@ -1,5 +1,11 @@
 const User = require("../models/User");
 
+// Email validation helper
+const isValidEmail = (email) => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+};
+
 exports.createUser = async (data) => {
   const { name, email } = data;
 
@@ -11,6 +17,12 @@ exports.createUser = async (data) => {
 
   if (!email) {
     const err = new Error("Email is required");
+    err.statusCode = 400;
+    throw err;
+  }
+
+  if (!isValidEmail(email)) {
+    const err = new Error("Invalid email format");
     err.statusCode = 400;
     throw err;
   }
@@ -59,6 +71,11 @@ exports.updateUser = async (id, data) => {
   }
 
   if (email) {
+    if (!isValidEmail(email)) {
+      const err = new Error("Invalid email format");
+      err.statusCode = 400;
+      throw err;
+    }
     const exists = await User.findOne({ email });
     if (exists && exists._id.toString() !== id) {
       const err = new Error("Email already in use by another account");

@@ -8,15 +8,15 @@ const upload = multer({
 });
 
 const boardController = require('../controllers/boardController');
+const validateObjectId = require('../middlewares/validateObjectId');
 
 router.get('/',boardController.getAllBoards);
-router.get('/:id',boardController.getBoardById);
+router.get('/:id/export', validateObjectId, boardController.exportBoard);
+router.get('/:id', validateObjectId, boardController.getBoardById);
 router.post('/',boardController.createBoard);
-router.put('/:id',boardController.updateBoard)
-router.delete('/:id',boardController.deleteBoardById);
-
-router.get('/:id/export', boardController.exportBoard);
 router.post('/import', upload.single('file'), boardController.importBoard);
+router.put('/:id', validateObjectId, boardController.updateBoard)
+router.delete('/:id', validateObjectId, boardController.deleteBoardById);
 
 module.exports = router;
   
